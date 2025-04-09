@@ -14,13 +14,39 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Головна</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'create_note' %}">Створити нотатку</a>
-                    </li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'create_note' %}">Створити нотатку</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'note_list' %}">Переглянути нотатки</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register' %}">Зареєструватися</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Увійти</a>
+                        </li>
+                    {% endif %}
+                </ul>
+
+                <!-- Блок для виходу -->
+                <ul class="navbar-nav ms-auto">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-link nav-link" style="display:inline; padding:0; background:none; border:none;">
+                                    Вийти
+                                </button>
+                            </form>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

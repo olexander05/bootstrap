@@ -1,0 +1,23 @@
+<h2>All Notes</h2>
+
+{% if user.is_authenticated %}
+    <p>Welcome, {{ user.username }}! You are viewing your notes.</p>
+{% else %}
+    <p>You are not logged in. You can only see public notes.</p>
+{% endif %}
+
+{% for note in notes %}
+    <div class="note border rounded p-3 mb-3">
+        <h3>{{ note.title }}</h3>
+        <p>{{ note.content }}</p>
+        <p><strong>Created by:</strong> {{ note.user.username }}</p>
+
+        {% if note.user == user %}
+            <a href="{% url 'edit_note' note.pk %}" class="btn btn-warning btn-sm">Редагувати</a>
+            <a href="{% url 'delete_note' note.pk %}" class="btn btn-danger btn-sm">Видалити</a>
+        {% endif %}
+    </div>
+{% empty %}
+    <p>No notes available.</p>
+{% endfor %}
+
